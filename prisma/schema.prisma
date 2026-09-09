@@ -1,0 +1,46 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/* Inscriptions à la formation — نموذج المسجلين في الدورة
+   Statuts (status) : nouveau | contacte | confirme | paye | annule
+   الحالات: جديد / تم الاتصال / مؤكد / مدفوع / ملغى */
+model Registration {
+  id         String   @id @default(cuid())
+  name       String
+  phone      String
+  email      String?
+  profession String
+  city       String?
+  level      String   @default("Formation complète — Niveaux 1, 2 et 2+")
+  message    String?
+  status     String   @default("nouveau")
+  adminNote  String?
+  source     String   @default("site")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([status])
+  @@index([createdAt])
+  @@index([phone])
+}
+
+/* Réglages du site (vidéos, images) — إعدادات الموقع
+   روابط الفيديو والصور القابلة للتعديل من لوحة التحكم /admin
+   key : "videos" (JSON) | "images" (JSON) */
+model SiteSetting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}
