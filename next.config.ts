@@ -1,7 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: "standalone",
   /* Prisma خارج تجميع الحِزم — لازم لعمل قاعدة البيانات على Vercel */
   serverExternalPackages: ["@prisma/client"],
   /* config options here */
